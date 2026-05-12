@@ -1,20 +1,77 @@
 {% extends "cars/base.html" %}
 
 {% block content %}
-<h1>Bem-vindo ao site de venda de carros</h1>
-
-<h2>Últimos carros adicionados:</h2>
-
-{% for car in cars %}
-    <div>
-        <h3>{{ car.brand }} {{ car.model }} ({{ car.year }})</h3>
-        <p>Preço: €{{ car.price }}</p>
-        <a href="{% url 'car_detail' car.pk %}">Ver detalhes</a>
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Encontre o Carro dos Seus Sonhos</h1>
+        <p class="lead mb-4">Os melhores carros usados e novos ao melhor preço</p>
+        <a href="{% url 'car_list' %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-search"></i> Ver Todos os Carros
+        </a>
     </div>
-    <hr>
-{% empty %}
-    <p>Nenhum carro disponível de momento.</p>
-{% endfor %}
+</section>
 
-<p><a href="{% url 'car_list' %}">Ver todos os carros</a></p>
+<!-- Carros em Destaque -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">Carros em Destaque</h2>
+    <div class="row">
+        {% for car in cars %}
+        <div class="col-md-4 mb-4">
+            <div class="card car-card h-100">
+                {% if car.image %}
+                <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="bi bi-car-front-fill text-white" style="font-size: 4rem;"></i>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
+                    <p class="card-text">
+                        <span class="badge bg-info">{{ car.year }}</span>
+                        <span class="badge bg-secondary">{{ car.get_fuel_type_display }}</span>
+                    </p>
+                    <p class="price-tag">€{{ car.price }}</p>
+                    <a href="{% url 'car_detail' car.pk %}" class="btn btn-primary w-100">
+                        <i class="bi bi-eye"></i> Ver Detalhes
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>Nenhum carro em destaque de momento.</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-3">
+        <a href="{% url 'car_list' %}" class="btn btn-outline-primary btn-lg">
+            Ver Todos os Carros <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Vantagens -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-3">
+                <i class="bi bi-shield-check text-primary" style="font-size: 3rem;"></i>
+                <h4>Garantia</h4>
+                <p>Todos os carros com garantia de 18 meses</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <i class="bi bi-cash-coin text-primary" style="font-size: 3rem;"></i>
+                <h4>Financiamento</h4>
+                <p>Crédito até 120 meses sem entrada</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <i class="bi bi-truck text-primary" style="font-size: 3rem;"></i>
+                <h4>Entrega</h4>
+                <p>Entrega grátis em todo o país</p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
