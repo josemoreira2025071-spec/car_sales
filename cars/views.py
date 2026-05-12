@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Car
 
-# Página inicial
+
 def home(request):
-    return render(request, 'cars/home.html')
+    cars = Car.objects.all().order_by('-created_at')[:6]  # Últimos 6 carros
+    return render(request, 'cars/home.html', {'cars': cars})
 
 
 # Página de listagem de todos os carros

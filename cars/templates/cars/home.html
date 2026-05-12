@@ -1,5 +1,20 @@
 {% extends "cars/base.html" %}
+
 {% block content %}
 <h1>Bem-vindo ao site de venda de carros</h1>
-<p>Em breve os melhores negócios.</p>
+
+<h2>Últimos carros adicionados:</h2>
+
+{% for car in cars %}
+    <div>
+        <h3>{{ car.brand }} {{ car.model }} ({{ car.year }})</h3>
+        <p>Preço: €{{ car.price }}</p>
+        <a href="{% url 'car_detail' car.pk %}">Ver detalhes</a>
+    </div>
+    <hr>
+{% empty %}
+    <p>Nenhum carro disponível de momento.</p>
+{% endfor %}
+
+<p><a href="{% url 'car_list' %}">Ver todos os carros</a></p>
 {% endblock %}
